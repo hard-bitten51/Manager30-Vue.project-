@@ -42,11 +42,13 @@
             </template>
             <el-menu-item-group>
               <el-menu-item style="margin-left:20px" index="roles">
-                <i class="el-icon-menu"></i>角色列表</el-menu-item>
+                <i class="el-icon-menu"></i>角色列表
+              </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item style="margin-left:20px" index="rights">
-                <i class="el-icon-menu"></i>权限列表</el-menu-item>
+                <i class="el-icon-menu"></i>权限列表
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="3">
@@ -56,15 +58,18 @@
             </template>
             <el-menu-item-group>
               <el-menu-item style="margin-left:20px" index="goods">
-                <i class="el-icon-menu"></i>商品列表</el-menu-item>
+                <i class="el-icon-menu"></i>商品列表
+              </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item style="margin-left:20px" index="params">
-                <i class="el-icon-menu"></i>分类数据</el-menu-item>
+                <i class="el-icon-menu"></i>分类数据
+              </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group>
               <el-menu-item style="margin-left:20px" index="categories">
-                <i class="el-icon-menu"></i>商品分类</el-menu-item>
+                <i class="el-icon-menu"></i>商品分类
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="4">
@@ -104,7 +109,15 @@
 <script>
 export default {
   name: "index",
-  methods: {}
+  methods: {},
+  created() {
+    //判断是否需要登陆
+      let storage = window.localStorage;
+    if (!storage.username) {
+      this.$router.push("/login");
+    }
+    
+  }
 };
 </script>
 

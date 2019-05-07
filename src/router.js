@@ -39,6 +39,7 @@ const routes = [
         component:orders},
         {path:'reports',
         component:reports},
+        {path: '',redirect: 'users'},
     ]},
     ]
 

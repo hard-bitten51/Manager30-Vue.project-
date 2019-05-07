@@ -52,33 +52,6 @@ export default {
           zip: 200333,
           tag: "家"
         },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1517 弄",
-          zip: 200333,
-          tag: "公司"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1519 弄",
-          zip: 200333,
-          tag: "家"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
-          zip: 200333,
-          tag: "公司"
-        }
       ]
       // currentPage1: 5,
       // currentPage2: 5,
@@ -90,13 +63,27 @@ export default {
     indexMethod(index) {
       return index * 2;
     }
-    //   handleSizeChange(val) {
-    //     console.log(`每页 ${val} 条`);
-    //   },
-    //   handleCurrentChange(val) {
-    //     console.log(`当前页: ${val}`);
-    //   }
-  }
+  },
+  created() {
+    let storage = window.localStorage;
+    if (!typeof storage.username) {
+      console.log(typeof storage.username)
+      console.log(111);
+      this.$router.push("/login");
+    }
+    //请求用户数据
+    this.$axios({
+      url:"users",
+      data:{
+        query:"",
+        pagenum:1,
+        pagesize:10
+      }
+    }).then(res=>{
+      console.log(res);
+      
+    })
+  },
 };
 </script>
 
