@@ -16,11 +16,13 @@ import params from './components/params.vue'
 import categories from './components/categories.vue'
 import orders from './components/orders.vue'
 import reports from './components/reports.vue'
+import bozai from './components/bozai.vue'
 
 //路由规则
 const routes = [
     // {path: '/',redirect: '/login'},
     {path:'/login',component:login},
+    {path:'/bozai',component:bozai},
     {path:'/',component:index,
     children:[
         {path:'users',

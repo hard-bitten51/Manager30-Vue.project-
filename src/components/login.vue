@@ -34,24 +34,37 @@ export default {
       // console.log(password);
       //发请求
       this.$axios({
-        methods:"post",
+        method:"post",
         url:'login',
         data:{
           username,
           password
         }
       }).then(res=>{
-        console.log(res);
-        //将登陆信息写入localStorage
+        // console.log(res);
+        // console.log(res.data.data.token);
+        //判断
+        if (res.data.meta.status === 200) {
+          //登陆成功并跳转
+          //将登陆信息写入localStorage
         
             let storage = window.localStorage
+            storage.setItem("token",res.data.data.token)
             //写入用户名和密码
-            storage.username= this.username
-            storage.password= this.password
+            storage.username = this.username
+            storage.password = this.password
+            // storage.token = res.data.data.token
             // console.log(typeof storage["username"])
             // console.log(typeof storage["password"])
         
         this.$router.push("/")
+        }else{
+          alert("用户或密码错误请重新输入")
+          this.username = ""
+          this.password = ""
+        }
+        
+        
       })
       
     }

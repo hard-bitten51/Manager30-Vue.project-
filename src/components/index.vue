@@ -113,7 +113,7 @@ export default {
   created() {
     //判断是否需要登陆
       let storage = window.localStorage;
-    if (!storage.username) {
+    if (!storage.token) {
       this.$router.push("/login");
     }
     
