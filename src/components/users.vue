@@ -73,7 +73,7 @@ export default {
     }).then(res => {
       console.log(res);
       this.tableData = res.data.data.users;
-    });
+    });       
   }
 };
 </script>
