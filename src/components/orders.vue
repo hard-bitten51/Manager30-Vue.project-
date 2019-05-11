@@ -28,7 +28,7 @@
             <el-button
             type="primary"
             icon="el-icon-edit"
-            @click="handleEdit(scope.$index,scope.row)"
+            @click="editVisible=true"
             plain
             size="mini"></el-button>
         </template>
@@ -44,10 +44,10 @@
     ></el-pagination>
     <!-- 编辑框 -->
     <el-dialog title="修改订单地址" :visible.sync="editVisible">
-      <el-form :model="editForm" :rules="addRules" ref="editForm">
+      <el-form :model="editForm"  ref="editForm">
         <el-form-item labal="省市区/县" labal-width="120px"> 
           <!-- 方法1 用级联选择器 -->
-          <el-cascder expand-trigger="hover" :options="options" v-model="selectedOption2"></el-cascder>
+          <el-cascder expand-trigger="hover" :options="options" v-model="selectedOptions2"></el-cascder>
           <!-- 方案2 用独立的省市联动组件 -->
           <v-distpicker></v-distpicker>
         </el-form-item>
@@ -77,13 +77,11 @@ export default {
   // 数据
   data() {
     return {
-      orderData:{query:"",
+      orderData:{
       pagesize:10,
       pagenum:1},
       // 表格依赖于数据没有数据  会一行都没有
       tableData: [],
-      //接口调用数据  未完成
-      orderData:{},
       //编辑框是否显示
       editVisible:false,
       editForm:{
@@ -100,8 +98,9 @@ export default {
     VDistpicker
   },
   methods: {
-    handleEdit(){
-
+    selected(ssq){
+      console.log(ssq);
+      
     }
   },
   //本地过滤器

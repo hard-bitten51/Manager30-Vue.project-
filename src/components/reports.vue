@@ -132,9 +132,6 @@ export default {
     var myChart = echarts.init(document.getElementById("main"))
     //使用刚指定的配置项和数据显示图表
     myChart.setOption(this.option)
-    this.$request.getReports().then(res=>{
-
-    })
   },
 };
 </script>
