@@ -3,6 +3,9 @@ import axios from 'axios'
 // 导入Vue $message Vue的原型上 实例化一个Vue
 import Vue from 'vue'
 
+//为使用编程式导航 导入路由对象
+import router from '../router'
+
 // 设置基地址
 axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 
@@ -28,13 +31,21 @@ axios.interceptors.response.use(
   function(response) {
     // Do something with response data
     // console.log('响应回来啦啦！！')
-    console.log(response)
+    // console.log(response)
     if (response.data.meta.status == 200) {
       // this.$message.success(response.data.meta.msg)
       // 原型使用
       Vue.prototype.$message.success(response.data.meta.msg)
       // 实例化Vue
       // new Vue().$message.success(response.data.meta.msg)
+    }else if (response.data.meta.status == 400 && 
+      response.data.meta.msg == '无效的token') {
+        //说明token为伪造的
+        new Vue().$message.warning('伪造token不好使哦！！！！！')
+        //编程式导航
+        router.push('login')
+        //删除token
+        window.sessionStorage.clear('token')
     }
     return response
   },
@@ -96,7 +107,28 @@ const request = {
     return axios.put(`users/${params.id}/role`,{
       rid:params.rid
     })
-  }
+  },
+  //新增角色
+  addRoles(params){
+    return axios.post(`roles`,params)
+  },
+  //删除角色
+  deleteRoles(id){
+    return axios.delete(`roles/${id}`)
+  },
+  //获取角色信息
+  getRolesById(id){
+    return axios.get(`roles/${id}`)
+  },
+  //获取展现的数据
+  getReports(){
+    return axios.get('reports/type/1')
+  },
+  //获取订单列表
+  getOrderList(params){
+    return axios.get('orders',{params})
+  },
+  
 }
 
 // 暴露出去 包含install方法的对象

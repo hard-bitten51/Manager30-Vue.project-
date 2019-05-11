@@ -7,10 +7,32 @@
       <el-breadcrumb-item>订单列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- table -->
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
+    <el-table :data="tableData" style="width: 100%" border>
+      <el-table-column type="index"></el-table-column>
+      <el-table-column prop="order_number" label="订单标号" width="180"></el-table-column>
+      <el-table-column prop="order_price" label="订单价格" width="180"></el-table-column>
+      <el-table-column prop="order_price" label="是否付款" width="180">
+        <template slot-scope="scope">
+            <el-button v-if="scope.row.pay_status==0" type="danger" plain>未付款</el-button>
+            <el-button v-else type="success" plain>已付款</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="is_send" label="是否发货"></el-table-column>
+      <el-table-column label="是否发货">
+        <template slot-scope="scope">
+            {{scope.row.create_time|formatTime}}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+            <el-button
+            type="primary"
+            icon="el-icon-edit"
+            @click="handleEdit(scope.$index,scope.row)"
+            plain
+            size="mini"></el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination
@@ -20,40 +42,80 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="400"
     ></el-pagination>
+    <!-- 编辑框 -->
+    <el-dialog title="修改订单地址" :visible.sync="editVisible">
+      <el-form :model="editForm" :rules="addRules" ref="editForm">
+        <el-form-item labal="省市区/县" labal-width="120px"> 
+          <!-- 方法1 用级联选择器 -->
+          <el-cascder expand-trigger="hover" :options="options" v-model="selectedOption2"></el-cascder>
+          <!-- 方案2 用独立的省市联动组件 -->
+          <v-distpicker></v-distpicker>
+        </el-form-item>
+        <el-form-item labal="详细地址" labal-width="120px">
+          <el-input v-model="editForm.address" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取消</el-button>
+        <el-button type="primary" @click="editVisible = false">确定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
+//导入moment插件
+import moment from 'moment'
+//导入组件
+import options from '../assets/city_data2017_element.js'
+//导入组件
+import VDistpicker from 'v-distpicker'
+
 export default {
   name: "orders",
   // 数据
   data() {
     return {
+      orderData:{query:"",
+      pagesize:10,
+      pagenum:1},
       // 表格依赖于数据没有数据  会一行都没有
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小黑",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小白",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小绿",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小花",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+      tableData: [],
+      //接口调用数据  未完成
+      orderData:{},
+      //编辑框是否显示
+      editVisible:false,
+      editForm:{
+        address:""
+      },
+      //级联选择器
+      options,
+      //选中的数据
+      selectedOptions2:[]
     };
-  }
+  },
+  //注册本地组件
+  components:{
+    VDistpicker
+  },
+  methods: {
+    handleEdit(){
+
+    }
+  },
+  //本地过滤器
+  filters:{
+    formatTime(value){
+      return moment(value).format("YYYY-MM-DD HH:mm:ss")
+    }
+  },
+  created() {
+    this.$request.getOrderList(this.orderData).then(res=>{
+      console.log(res);
+      this.tableData = res.data.data.goods;
+    })
+  },
 };
 </script>
 

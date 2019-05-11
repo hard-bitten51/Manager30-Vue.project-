@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import App from './App.vue'
 
+//全局可用
 import $ from 'jquery'
 Vue.prototype.$ = $
 
